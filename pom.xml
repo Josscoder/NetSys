@@ -20,6 +20,8 @@
 
     <modules>
         <module>commons</module>
+        <module>netsys-client</module>
+        <module>netsys-server</module>
     </modules>
 
     <properties>
