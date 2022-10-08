@@ -46,8 +46,9 @@ public class NetSysReports extends PluginBase {
                 }
                 ReportPacket reportPacket = (ReportPacket) packet;
 
-                String output = prefix + TextFormat.RED + String.format("(%s) %s was reported by %s for %s!",
+                String output = prefix + TextFormat.RED + String.format("(%s-%s) %s was reported by %s for %s!",
                         reportPacket.id,
+                        reportPacket.server,
                         reportPacket.target,
                         reportPacket.sender,
                         reportPacket.reason

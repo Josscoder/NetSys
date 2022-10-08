@@ -47,6 +47,14 @@ public class NetSys {
 
     private boolean debug = false;
 
+    @CanIgnoreReturnValue
+    public NetSys client(Client client) {
+        this.client = client;
+        return this;
+    }
+
+    private Client client = null;
+
     public void start() {
         startTime = System.currentTimeMillis();
 
@@ -57,6 +65,7 @@ public class NetSys {
                 "No IPacketHandler class found to handle packets"
         );
         Preconditions.checkNotNull(redisPool, "Configure your redisPool");
+        Preconditions.checkNotNull(client, "Your client data is null");
 
         packetPool.init();
         redisPool.login();

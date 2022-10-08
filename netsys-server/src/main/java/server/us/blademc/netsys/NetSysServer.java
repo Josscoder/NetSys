@@ -1,5 +1,6 @@
 package server.us.blademc.netsys;
 
+import commons.us.blademc.netsys.Client;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.redis.RedisPool;
 import dev.waterdog.waterdogpe.plugin.Plugin;
@@ -32,10 +33,15 @@ public class NetSysServer extends Plugin {
                 .host(config.getString("redis.host"))
                 .password(config.getString("redis.password"));
 
+        Client client = new Client(config.getString("client.name"),
+                config.getString("client.type")
+        );
+
         netSys
                 .packetHandler(new ServerPacketHandler())
                 .logger(new ServerLogger())
                 .redisPool(redisPool)
+                .client(client)
                 .debug(config.getBoolean("debug", false))
                 .start();
     }

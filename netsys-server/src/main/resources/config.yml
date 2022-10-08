@@ -1,3 +1,7 @@
+client:
+  name: "proxy-1"
+  type: "proxy"
+
 redis:
   host: "localhost"
   password: "yourpasswordhere"

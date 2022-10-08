@@ -28,6 +28,7 @@ public class ReportCommand extends Command {
 
         NetSysReports.getInstance().sync().getRedisPool().dataPacket(new ReportPacket(){{
             id = UUID.randomUUID().toString().substring(0, 4);
+            server = NetSysReports.getInstance().sync().getClient().getName();
             sender = commandSender.getName();
             target = playerName;
             reason = reasonOutput;

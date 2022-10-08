@@ -10,6 +10,7 @@ public class ReportPacket extends DataPacket {
     public String sender;
     public String target;
     public String reason;
+    public String server;
 
     public ReportPacket() {
         super((byte) 0x01);
@@ -21,6 +22,7 @@ public class ReportPacket extends DataPacket {
         output.writeUTF(sender);
         output.writeUTF(target);
         output.writeUTF(reason);
+        output.writeUTF(server);
     }
 
     @Override
@@ -29,5 +31,6 @@ public class ReportPacket extends DataPacket {
         sender = input.readUTF();
         target = input.readUTF();
         reason = input.readUTF();
+        server = input.readUTF();
     }
 }
