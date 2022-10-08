@@ -1,6 +1,8 @@
-client:
+serviceInfo:
   name: "proxy-1"
   type: "proxy"
+  region: "na"
+  branch: "dev"
 
 redis:
   host: "localhost"

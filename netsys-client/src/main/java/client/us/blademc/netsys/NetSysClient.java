@@ -3,7 +3,7 @@ package client.us.blademc.netsys;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
-import commons.us.blademc.netsys.Client;
+import commons.us.blademc.netsys.ServiceInfo;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.redis.RedisPool;
 import lombok.Getter;
@@ -38,16 +38,19 @@ public class NetSysClient extends PluginBase {
                 .host(redisSection.getString("host"))
                 .password(redisSection.getString("password"));
 
-        ConfigSection clientSection = config.getSection("client");
-        Client client = new Client(clientSection.getString("name"),
-                clientSection.getString("type")
+        ConfigSection serviceInfoSection = config.getSection("serviceInfo");
+        ServiceInfo serviceInfo = new ServiceInfo(
+                serviceInfoSection.getString("name"),
+                serviceInfoSection.getString("type"),
+                serviceInfoSection.getString("region"),
+                serviceInfoSection.getString("branch")
         );
 
         netSys
                 .packetHandler(new ClientPacketHandler())
                 .logger(new ClientLogger())
                 .redisPool(redisPool)
-                .client(client)
+                .serviceInfo(serviceInfo)
                 .debug(config.getBoolean("debug", false))
                 .start();
     }
