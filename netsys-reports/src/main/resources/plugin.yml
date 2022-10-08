@@ -1,0 +1,7 @@
+name: NetSysReports
+main: report.us.blademc.netsys.NetSysReports
+api: 1.0.0
+version: ${project.version}
+author: BladeMC Team
+softdepend:
+  - NetSysClient

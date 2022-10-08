@@ -48,6 +48,8 @@ public class NetSys {
     private boolean debug = false;
 
     public void start() {
+        startTime = System.currentTimeMillis();
+
         Preconditions.checkNotNull(logger,
                 "No ILoggerHandler class found to handle messages"
         );
@@ -59,6 +61,8 @@ public class NetSys {
         packetPool.init();
         redisPool.login();
     }
+
+    private double startTime;
 
     public void stop() {
         if (redisPool != null) redisPool.close();

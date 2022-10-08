@@ -11,6 +11,10 @@ public class NetSysServer extends Plugin {
     @Getter
     private static NetSysServer instance;
 
+    public NetSys sync() {
+        return netSys;
+    }
+
     @Getter
     private NetSys netSys = null;
 

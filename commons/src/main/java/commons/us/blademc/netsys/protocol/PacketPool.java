@@ -25,9 +25,10 @@ public class PacketPool {
     }
 
     public void registerPacket(DataPacket ...packets) {
-        Arrays.stream(packets).forEach(packet ->
-                registeredPackets.putIfAbsent(packet.getPid(), packet.getClass())
-        );
+        Arrays.stream(packets).forEach(packet -> {
+            registeredPackets.putIfAbsent(packet.getPid(), packet.getClass());
+            if (netSys.isDebug()) netSys.getLogger().debug("Packet " + packet.getClass().getName() + " registered!");
+        });
     }
 
     public DataPacket getPacket(byte pid) {

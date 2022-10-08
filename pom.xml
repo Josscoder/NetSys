@@ -22,6 +22,7 @@
         <module>commons</module>
         <module>netsys-client</module>
         <module>netsys-server</module>
+        <module>netsys-reports</module>
     </modules>
 
     <properties>

@@ -12,13 +12,17 @@ public class NetSysClient extends PluginBase {
     @Getter
     private static NetSysClient instance;
 
-    @Getter
-    private NetSys netSys = null;
-
     @Override
     public void onLoad() {
         instance = this;
     }
+
+    public NetSys sync() {
+        return netSys;
+    }
+
+    @Getter
+    private NetSys netSys = null;
 
     @Override
     public void onEnable() {

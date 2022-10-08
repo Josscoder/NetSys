@@ -11,14 +11,10 @@ import lombok.Setter;
 import redis.clients.jedis.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -26,7 +22,7 @@ public class RedisPool {
 
     protected final NetSys netSys;
 
-    private String filterID = "NetSysChannel";
+    private byte[] filterID = "NetSysPacketChannel".getBytes(StandardCharsets.UTF_8);
 
     public RedisPool(NetSys netSys) {
         this.netSys = netSys;
@@ -63,29 +59,31 @@ public class RedisPool {
 
         connected = connection.getResource().isConnected();
         if (connected) {
-            netSys.getLogger().warn("The connection was established, synchronizing...");
+            netSys.getLogger().info("The connection was established, synchronizing...");
             sync();
         } else {
-            netSys.getLogger().warn("A connection could not be established because something in the credentials is wrong");
+            netSys.getLogger().error("A connection could not be established because something in the credentials is wrong");
         }
     }
 
     private JedisPool connection = null;
 
     private void sync() {
-        handlePackets();
-        handleMessages();
+        ForkJoinPool.commonPool().execute(this::handlePackets);
+        netSys.getLogger().warn(String.format("Synchronization is done (%sms)!",
+                ((System.currentTimeMillis() - netSys.getStartTime()) / 1000.0D))
+        );
     }
 
     private void handlePackets() {
-        ForkJoinPool.commonPool().execute(() -> execute(jedis -> {
+        execute(jedis -> {
             jedis.subscribe(packetPubSub = new BinaryJedisPubSub(){
                 @Override
                 public void onMessage(byte[] channel, byte[] message) {
                     handlePacketDecoding(message);
                 }
-            }, filterID.getBytes(StandardCharsets.UTF_8));
-        }));
+            }, filterID);
+        });
     }
 
     private BinaryJedisPubSub packetPubSub = null;
@@ -94,8 +92,8 @@ public class RedisPool {
         ByteArrayDataInput input = ByteStreams.newDataInput(message);
 
         DataPacket packet = netSys.getPacketPool().getPacket(input.readByte());
-        if (packet == null && netSys.isDebug()) {
-            netSys.getLogger().debug("Packet received is null");
+        if (packet == null) {
+            if (netSys.isDebug()) netSys.getLogger().debug("Packet received is null");
             return;
         }
 
@@ -118,7 +116,7 @@ public class RedisPool {
             output.writeByte(packet.getPid());
             packet.encode(output);
 
-            jedis.publish(filterID.getBytes(StandardCharsets.UTF_8), output.toByteArray());
+            jedis.publish(filterID, output.toByteArray());
 
             if (netSys.isDebug()) {
                 netSys.getLogger().debug("Packet " + packet.getClass().getName() + " encoded and sent!");
@@ -151,56 +149,8 @@ public class RedisPool {
         }
     }
 
-    public void publish(String channel, Object... args) {
-        StringBuilder builder = new StringBuilder();
-        Arrays.stream(args).forEach(arg -> builder.append(";").append(arg.toString()));
-        publish(channel, builder.substring(1));
-    }
-
-    public void publish(String channel, String message) {
-        CompletableFuture.runAsync(() -> execute(jedis -> {
-            jedis.publish(filterID, channel + "|" + message);
-            if (netSys.isDebug()) {
-                netSys.getLogger().debug("A message was published on the channel " + channel);
-            }
-        }));
-    }
-
-    public void subscribe(String channel, MessageCallback callback) {
-        callbackMap.putIfAbsent(channel, callback);
-
-        if (netSys.isDebug()) {
-            netSys.getLogger().debug("A subcription was made for the channel " + channel);
-        }
-    }
-
-    private void handleMessages() {
-        ForkJoinPool.commonPool().execute(() -> execute(jedis -> {
-            jedis.subscribe(messagePubSub = new JedisPubSub() {
-                @Override
-                public void onMessage(String channel, String message) {
-                    if (!channel.equals(filterID)) return;
-                    String[] args = message.split(Pattern.quote("|"));
-
-                    if (!callbackMap.containsKey(args[0])) return;
-                    String[] messages = Arrays.copyOfRange(args, 1, args.length);
-                    String msg = Arrays.toString(messages);
-                    callbackMap.get(args[0]).onMessage(msg.substring(1).split(";"));
-
-                    if (netSys.isDebug()) {
-                        netSys.getLogger().debug("A message was decoded and handled for the channel " + args[0]);
-                    }
-                }
-            }, filterID);
-        }));
-    }
-
-    protected final Map<String, MessageCallback> callbackMap = new HashMap<>();
-    private JedisPubSub messagePubSub = null;
-
     public void close() {
         if (connection != null) connection.close();
         if (packetPubSub != null) packetPubSub.unsubscribe();
-        if (messagePubSub != null) messagePubSub.unsubscribe();
     }
 }
