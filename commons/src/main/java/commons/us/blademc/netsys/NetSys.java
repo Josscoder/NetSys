@@ -70,7 +70,7 @@ public class NetSys {
         packetPool.init();
         redisPool.login();
 
-        getLogger().info("§8" + serviceInfo.toString());
+        getLogger().info("§aService Info: " + serviceInfo.toString());
     }
 
     private double startTime;

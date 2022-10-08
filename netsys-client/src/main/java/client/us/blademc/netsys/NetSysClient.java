@@ -53,6 +53,8 @@ public class NetSysClient extends PluginBase {
                 .serviceInfo(serviceInfo)
                 .debug(config.getBoolean("debug", false))
                 .start();
+
+        getServer().getCommandMap().register("whereaim", new WhereAImCommand());
     }
 
     @Override
