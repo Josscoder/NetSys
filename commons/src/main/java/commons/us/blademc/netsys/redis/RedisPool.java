@@ -31,8 +31,12 @@ public class RedisPool {
     @CanIgnoreReturnValue
     public RedisPool host(String host) {
         String[] split = host.split(":");
-        this.host = split[0];
-        this.port = Integer.parseInt(split[1]);
+        if (split.length > 1) {
+            this.host = split[0];
+            this.port = Integer.parseInt(split[1]);
+        } else {
+            this.host = host;
+        }
         return this;
     }
 

@@ -10,7 +10,7 @@ public class ServerLogger implements ILoggerHandler {
 
     @Override
     public void info(String message) {
-        pluginLogger.info(Color.LIGHT_PURPLE + message);
+        pluginLogger.info(Color.GREEN + message);
     }
 
     @Override

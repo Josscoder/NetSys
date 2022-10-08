@@ -10,7 +10,7 @@ public class ClientLogger implements ILoggerHandler {
 
     @Override
     public void info(String message) {
-        pluginLogger.info(TextFormat.LIGHT_PURPLE + message);
+        pluginLogger.info(TextFormat.GREEN + message);
     }
 
     @Override

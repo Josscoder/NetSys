@@ -17,11 +17,7 @@ public class PacketPool {
     }
 
     public void init() {
-        netSys.getLogger().warn("Registering default packets...");
-
         //TODO: register default packets here
-
-        netSys.getLogger().warn("Packets registered successfully!");
     }
 
     public void registerPacket(DataPacket ...packets) {
