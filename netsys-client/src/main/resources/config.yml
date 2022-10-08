@@ -1,0 +1,9 @@
+client:
+  name: "lobby-1"
+  type: "lobby"
+
+redis:
+  host: "localhost"
+  password: "yourpasswordhere"
+
+debug: false

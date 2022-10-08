@@ -1,0 +1,4 @@
+name: NetSysServer
+main: server.us.blademc.netsys.NetSysServer
+version: ${project.version}
+author: BladeMC Team

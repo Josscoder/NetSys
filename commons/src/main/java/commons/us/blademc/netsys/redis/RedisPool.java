@@ -94,7 +94,7 @@ public class RedisPool {
         ByteArrayDataInput input = ByteStreams.newDataInput(message);
 
         DataPacket packet = netSys.getPacketPool().getPacket(input.readByte());
-        if (packet == null) {
+        if (packet == null && netSys.isDebug()) {
             netSys.getLogger().debug("Packet received is null");
             return;
         }
@@ -102,7 +102,9 @@ public class RedisPool {
         packet.decode(input);
         netSys.getPacketHandler().handle(packet);
 
-        netSys.getLogger().debug("Packet " + packet.getClass().getName() + " decoded and handled!");
+        if (netSys.isDebug()) {
+            netSys.getLogger().debug("Packet " + packet.getClass().getName() + " decoded and handled!");
+        }
     }
 
     public void dataPacket(DataPacket packet) {
@@ -117,7 +119,10 @@ public class RedisPool {
             packet.encode(output);
 
             jedis.publish(filterID.getBytes(StandardCharsets.UTF_8), output.toByteArray());
-            netSys.getLogger().debug("Packet " + packet.getClass().getName() + " encoded and sent!");
+
+            if (netSys.isDebug()) {
+                netSys.getLogger().debug("Packet " + packet.getClass().getName() + " encoded and sent!");
+            }
         });
     }
 
@@ -155,11 +160,18 @@ public class RedisPool {
     public void publish(String channel, String message) {
         CompletableFuture.runAsync(() -> execute(jedis -> {
             jedis.publish(filterID, channel + "|" + message);
+            if (netSys.isDebug()) {
+                netSys.getLogger().debug("A message was published on the channel " + channel);
+            }
         }));
     }
 
     public void subscribe(String channel, MessageCallback callback) {
         callbackMap.putIfAbsent(channel, callback);
+
+        if (netSys.isDebug()) {
+            netSys.getLogger().debug("A subcription was made for the channel " + channel);
+        }
     }
 
     private void handleMessages() {
@@ -174,6 +186,10 @@ public class RedisPool {
                     String[] messages = Arrays.copyOfRange(args, 1, args.length);
                     String msg = Arrays.toString(messages);
                     callbackMap.get(args[0]).onMessage(msg.substring(1).split(";"));
+
+                    if (netSys.isDebug()) {
+                        netSys.getLogger().debug("A message was decoded and handled for the channel " + args[0]);
+                    }
                 }
             }, filterID);
         }));

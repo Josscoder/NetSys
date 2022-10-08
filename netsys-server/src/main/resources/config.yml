@@ -1,0 +1,5 @@
+redis:
+  host: "localhost"
+  password: "yourpasswordhere"
+
+debug: false

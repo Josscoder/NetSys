@@ -1,0 +1,5 @@
+name: NetSysClient
+main: client.us.blademc.netsys.NetSysClient
+api: 1.0.0
+version: ${project.version}
+author: BladeMC Team
