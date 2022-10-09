@@ -6,6 +6,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class ReportCommand extends Command {
@@ -18,24 +19,24 @@ public class ReportCommand extends Command {
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String s, String[] args) {
+    public boolean execute(CommandSender sender, String s, String[] args) {
         if (args.length != 2) {
-            commandSender.sendMessage(new TranslationContainer("commands.generic.usage", usageMessage));
+            sender.sendMessage(new TranslationContainer("commands.generic.usage", usageMessage));
             return false;
         }
 
         String playerName = args[0];
-        String reasonOutput = args[1];
+        String reasonOutput = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
         ReportPacket packet = new ReportPacket();
-        packet.id = UUID.randomUUID().toString().substring(0, 4);
+        packet.id = UUID.randomUUID().toString().substring(0, 3);
         packet.server = NetSysClient.getInstance().getServiceInfo().getID();
-        packet.sender = commandSender.getName();
+        packet.sender = sender.getName();
         packet.target = playerName;
         packet.reason = reasonOutput;
         NetSysReports.getInstance().sync().getRedisPool().dataPacket(packet);
 
-        commandSender.sendMessage(NetSysReports.getInstance().getPrefix()
+        sender.sendMessage(NetSysReports.getInstance().getPrefix()
                 + TextFormat.GREEN + "Your report was sent!"
         );
         return true;

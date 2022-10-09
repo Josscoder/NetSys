@@ -10,7 +10,7 @@ public class GotoCommand extends Command {
     public GotoCommand() {
         super("goto", CommandSettings.builder()
                 .setPermission("waterdog.command.goto")
-                .setUsageMessage("/goto <player>")
+                .setUsageMessage("/goto [player]")
                 .setDescription("Teleport to another player on the proxy")
                 .build()
         );

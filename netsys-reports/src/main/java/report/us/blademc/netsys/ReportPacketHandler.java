@@ -2,6 +2,7 @@ package report.us.blademc.netsys;
 
 import client.us.blademc.netsys.ClientPacketHandler;
 import cn.nukkit.Server;
+import cn.nukkit.level.Sound;
 import cn.nukkit.utils.TextFormat;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
 
@@ -27,7 +28,10 @@ public class ReportPacketHandler extends ClientPacketHandler {
         Server.getInstance().getOnlinePlayers().values()
                 .stream()
                 .filter(player -> player.hasPermission(NetSysReports.getInstance().getPermission()))
-                .forEach(player -> player.sendMessage(output));
+                .forEach(player -> {
+                    player.getLevel().addSound(player, Sound.RANDOM_TOTEM, 1, 1, player);
+                    player.sendMessage(output);
+                });
 
         NetSysReports.getInstance().getLogger().info(output);
     }
