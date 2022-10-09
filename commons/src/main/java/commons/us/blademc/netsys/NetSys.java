@@ -47,14 +47,6 @@ public class NetSys {
 
     private boolean debug = false;
 
-    @CanIgnoreReturnValue
-    public NetSys serviceInfo(ServiceInfo serviceInfo) {
-        this.serviceInfo = serviceInfo;
-        return this;
-    }
-
-    private ServiceInfo serviceInfo = null;
-
     public void start() {
         startTime = System.currentTimeMillis();
 
@@ -65,12 +57,9 @@ public class NetSys {
                 "No IPacketHandler class found to handle packets"
         );
         Preconditions.checkNotNull(redisPool, "Configure your redisPool");
-        Preconditions.checkNotNull(serviceInfo, "Your serviceInfo is null");
 
         packetPool.init();
         redisPool.login();
-
-        getLogger().info("§aService Info: " + serviceInfo.toString());
     }
 
     private double startTime;

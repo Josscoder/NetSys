@@ -1,8 +1,8 @@
 serviceInfo:
-  name: "lobby-1"
   type: "lobby"
   region: "na"
   branch: "dev"
+  publicAddress: ""
 
 redis:
   host: "localhost"

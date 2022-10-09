@@ -1,5 +1,6 @@
 package report.us.blademc.netsys;
 
+import client.us.blademc.netsys.NetSysClient;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
@@ -28,7 +29,7 @@ public class ReportCommand extends Command {
 
         NetSysReports.getInstance().sync().getRedisPool().dataPacket(new ReportPacket(){{
             id = UUID.randomUUID().toString().substring(0, 4);
-            server = NetSysReports.getInstance().sync().getServiceInfo().getName();
+            server = NetSysClient.getInstance().getServiceInfo().getID();
             sender = commandSender.getName();
             target = playerName;
             reason = reasonOutput;

@@ -2,7 +2,7 @@ package client.us.blademc.netsys;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import commons.us.blademc.netsys.ServiceInfo;
+import commons.us.blademc.netsys.service.ClientServiceInfo;
 
 public class WhereAImCommand extends Command {
 
@@ -16,7 +16,7 @@ public class WhereAImCommand extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String s, String[] strings) {
-        ServiceInfo serviceInfo = NetSysClient.getInstance().getNetSys().getServiceInfo();
+        ClientServiceInfo serviceInfo = NetSysClient.getInstance().getServiceInfo();
         sender.sendMessage("§aYou are currently online on " + serviceInfo.toString());
         return true;
     }

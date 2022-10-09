@@ -1,7 +1,7 @@
 package commons.us.blademc.netsys.protocol;
 
 import commons.us.blademc.netsys.NetSys;
-import commons.us.blademc.netsys.protocol.packet.DataPacket;
+import commons.us.blademc.netsys.protocol.packet.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,7 +17,12 @@ public class PacketPool {
     }
 
     public void init() {
-        //TODO: register default packets here
+        registerPacket(
+                new OpenConnectionRequestPacket(),
+                new OpenConnectionResponsePacket(),
+                new CloseConnectionPacket(),
+                new ServerDisconnectPacket()
+        );
     }
 
     public void registerPacket(DataPacket ...packets) {

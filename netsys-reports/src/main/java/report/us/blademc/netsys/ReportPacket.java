@@ -13,7 +13,7 @@ public class ReportPacket extends DataPacket {
     public String server;
 
     public ReportPacket() {
-        super((byte) 0x01);
+        super((byte) 0x53);
     }
 
     @Override
