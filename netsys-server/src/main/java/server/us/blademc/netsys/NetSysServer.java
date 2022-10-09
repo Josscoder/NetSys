@@ -47,7 +47,7 @@ public class NetSysServer extends Plugin {
 
     private void handleService() {
         Configuration config = getConfig();
-        serviceInfo = new ServerServiceInfo(
+        serviceInfo = new ServerServiceInfo(netSys,
                 config.getString("serviceInfo.name"),
                 config.getString("serviceInfo.type"),
                 config.getString("serviceInfo.region"),
@@ -61,6 +61,7 @@ public class NetSysServer extends Plugin {
 
     @Override
     public void onDisable() {
+        if (serviceInfo != null) serviceInfo.disconnect();
         if (netSys != null) netSys.stop();
     }
 }

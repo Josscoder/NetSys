@@ -57,7 +57,7 @@ public class ServerPacketHandler implements IPacketHandler {
             case ProtocolInfo.CLOSE_CONNECTION_PACKET:
                 CloseConnectionPacket closeConnectionPacket = (CloseConnectionPacket) packet;
                 proxy.removeServerInfo(closeConnectionPacket.id);
-                netSys.getLogger().warn("§aServer " + closeConnectionPacket.id + " disconnected by " + closeConnectionPacket.reason);
+                netSys.getLogger().warn("§cServer " + closeConnectionPacket.id + " disconnected by " + closeConnectionPacket.reason);
                 break;
         }
     }
