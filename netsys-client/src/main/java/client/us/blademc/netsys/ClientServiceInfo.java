@@ -1,8 +1,8 @@
 package client.us.blademc.netsys;
 
 import commons.us.blademc.netsys.NetSys;
-import commons.us.blademc.netsys.protocol.packet.CloseConnectionPacket;
-import commons.us.blademc.netsys.protocol.packet.OpenConnectionRequestPacket;
+import commons.us.blademc.netsys.protocol.packet.CloseClientConnectionPacket;
+import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionRequestPacket;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class ClientServiceInfo {
     public void login() {
         if (logged) return;
 
-        OpenConnectionRequestPacket packet = new OpenConnectionRequestPacket();
+        OpenClientConnectionRequestPacket packet = new OpenClientConnectionRequestPacket();
         packet.id = getID();
         packet.uuid = uuid;
         packet.type = type;
@@ -39,22 +39,18 @@ public class ClientServiceInfo {
         netSys.getRedisPool().dataPacket(packet);
     }
 
-    public String getID() {
-        return String.format("%s-%s-%s",
-                region,
-                type,
-                uuid.substring(0, 16)
-        );
+    public String getShortUUID() {
+        return uuid.substring(0, 5);
     }
 
-    public void disconnect() {
-        disconnect("Request");
+    public String getID() {
+        return String.format("%s-%s", type, getShortUUID());
     }
 
     public void disconnect(String reason) {
         if (!logged) return;
 
-        CloseConnectionPacket packet = new CloseConnectionPacket();
+        CloseClientConnectionPacket packet = new CloseClientConnectionPacket();
         packet.id = getID();
         packet.reason = reason;
 
@@ -63,6 +59,6 @@ public class ClientServiceInfo {
 
     @Override
     public String toString() {
-        return String.format("§e%s §a(§e%s§a)", getID(), serverID);
+        return String.format("§e%s-%s-%s §a(§e%s§a)", region, getID(), branch, serverID);
     }
 }

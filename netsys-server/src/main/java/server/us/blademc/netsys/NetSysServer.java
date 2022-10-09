@@ -2,10 +2,20 @@ package server.us.blademc.netsys;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.redis.RedisPool;
+import dev.waterdog.waterdogpe.event.defaults.PreTransferEvent;
+import dev.waterdog.waterdogpe.event.defaults.ProxyPingEvent;
+import dev.waterdog.waterdogpe.event.defaults.ProxyQueryEvent;
+import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
+import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.plugin.Plugin;
 import dev.waterdog.waterdogpe.utils.config.Configuration;
 import lombok.Getter;
+import server.us.blademc.netsys.command.GotoCommand;
+import server.us.blademc.netsys.command.TransferCommand;
+import server.us.blademc.netsys.listener.JoinHandler;
+import server.us.blademc.netsys.listener.ReconnectHandler;
 
+@Getter
 public class NetSysServer extends Plugin {
 
     @Getter
@@ -15,7 +25,6 @@ public class NetSysServer extends Plugin {
         return netSys;
     }
 
-    @Getter
     private NetSys netSys = null;
 
     @Override
@@ -25,8 +34,18 @@ public class NetSysServer extends Plugin {
         instance = this;
 
         handleNetSys();
+
         handleService();
+
+        bedrockServerPool = new BedrockServerPool(netSys);
+        bedrockServerPool.init();
+
+        rewriteHandlers();
+        registerCommands();
+        subscribeEvents();
     }
+
+    private BedrockServerPool bedrockServerPool;
 
     private void handleNetSys() {
         netSys = new NetSys();
@@ -56,8 +75,43 @@ public class NetSysServer extends Plugin {
         netSys.getLogger().info("§aService Info: " + serviceInfo.toString());
     }
 
+    private void rewriteHandlers() {
+        getProxy().setJoinHandler(new JoinHandler());
+        getProxy().setReconnectHandler(new ReconnectHandler());
+    }
+
+    private void registerCommands() {
+        getProxy().getCommandMap().registerCommand(new GotoCommand());
+        getProxy().getCommandMap().registerCommand(new TransferCommand());
+    }
+
+    private void subscribeEvents() {
+        getProxy().getEventManager().subscribe(ProxyQueryEvent.class, this::onQuery);
+        getProxy().getEventManager().subscribe(ProxyPingEvent.class, this::onPing);
+        getProxy().getEventManager().subscribe(PreTransferEvent.class, this::onPreTransfer);
+    }
+
+    public void onQuery(ProxyQueryEvent event) {
+        event.setMaximumPlayerCount(event.getPlayerCount() + 10);
+    }
+
+    public void onPing(ProxyPingEvent event) {
+        event.setMaximumPlayerCount(event.getPlayerCount() + 10);
+    }
+
+    public void onPreTransfer(PreTransferEvent event) {
+        if (event.isCancelled()) return;
+
+        ProxiedPlayer player = event.getPlayer();
+
+        ServerInfo targetServer = event.getTargetServer();
+        if (player.getServerInfo().equals(targetServer)) return;
+
+        player.sendMessage("§aConnecting you to " + targetServer.getServerName());
+    }
+
     @Getter
-    private ServerServiceInfo serviceInfo;
+    private ServerServiceInfo serviceInfo = null;
 
     @Override
     public void onDisable() {

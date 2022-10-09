@@ -3,10 +3,10 @@ package server.us.blademc.netsys;
 import commons.us.blademc.netsys.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
-import commons.us.blademc.netsys.protocol.packet.CloseConnectionPacket;
+import commons.us.blademc.netsys.protocol.packet.CloseClientConnectionPacket;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
-import commons.us.blademc.netsys.protocol.packet.OpenConnectionRequestPacket;
-import commons.us.blademc.netsys.protocol.packet.OpenConnectionResponsePacket;
+import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionRequestPacket;
+import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionResponsePacket;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.network.serverinfo.BedrockServerInfo;
 
@@ -23,16 +23,16 @@ public class ServerPacketHandler implements IPacketHandler {
         ProxyServer proxy = ProxyServer.getInstance();
 
         switch (packet.getPid()) {
-            case ProtocolInfo.OPEN_CONNECTION_REQUEST_PACKET:
-                OpenConnectionRequestPacket openConnectionRequestPacket = (OpenConnectionRequestPacket) packet;
-                String prefix = openConnectionRequestPacket.id;
+            case ProtocolInfo.OPEN_CLIENT_CONNECTION_REQUEST_PACKET:
+                OpenClientConnectionRequestPacket openClientConnectionRequestPacket = (OpenClientConnectionRequestPacket) packet;
+                String prefix = openClientConnectionRequestPacket.id;
 
-                OpenConnectionResponsePacket openConnectionResponsePacket = new OpenConnectionResponsePacket();
-                openConnectionResponsePacket.clientID = prefix;
+                OpenClientConnectionResponsePacket openClientConnectionResponsePacket = new OpenClientConnectionResponsePacket();
+                openClientConnectionResponsePacket.clientID = prefix;
 
-                InetSocketAddress socketAddress = openConnectionRequestPacket.branch.toLowerCase().startsWith("dev")
-                        ? new InetSocketAddress("127.0.0.1", openConnectionRequestPacket.publicAddress.getPort())
-                        : openConnectionRequestPacket.publicAddress;
+                InetSocketAddress socketAddress = openClientConnectionRequestPacket.branch.startsWith("dev")
+                        ? new InetSocketAddress("127.0.0.1", openClientConnectionRequestPacket.publicAddress.getPort())
+                        : openClientConnectionRequestPacket.publicAddress;
 
                 BedrockServerInfo bedrockServerInfo = new BedrockServerInfo(
                         prefix,
@@ -41,23 +41,22 @@ public class ServerPacketHandler implements IPacketHandler {
                 );
 
                 boolean registered = proxy.registerServerInfo(bedrockServerInfo);
+                openClientConnectionResponsePacket.accepted = registered;
 
                 if (registered) {
-                    openConnectionResponsePacket.accepted = true;
-                    openConnectionResponsePacket.serverID = serviceInfo.getID();
-                    netSys.getRedisPool().dataPacket(openConnectionResponsePacket);
-                    netSys.getLogger().warn("§a" + prefix + " Authentication accepted, new registered server!");
+                    openClientConnectionResponsePacket.serverID = serviceInfo.getID();
+                    netSys.getRedisPool().dataPacket(openClientConnectionResponsePacket);
+                    netSysServer.getBedrockServerPool().storeServer(bedrockServerInfo);
+                    netSys.getLogger().info(prefix + " Authentication accepted, new registered NetSys-Client!");
                     return;
                 }
 
-                openConnectionResponsePacket.accepted = false;
-                netSys.getRedisPool().dataPacket(openConnectionResponsePacket);
-                netSys.getLogger().warn("§c" + prefix + " Authentication failed by duplicate server, automatically disconnected!");
+                netSys.getRedisPool().dataPacket(openClientConnectionResponsePacket);
+                netSys.getLogger().warn("§c" + prefix + " Authentication failed by duplicate NetSys-Client, automatically disconnected!");
                 break;
-            case ProtocolInfo.CLOSE_CONNECTION_PACKET:
-                CloseConnectionPacket closeConnectionPacket = (CloseConnectionPacket) packet;
-                proxy.removeServerInfo(closeConnectionPacket.id);
-                netSys.getLogger().warn("§cServer " + closeConnectionPacket.id + " disconnected by " + closeConnectionPacket.reason);
+            case ProtocolInfo.CLOSE_CLIENT_CONNECTION_PACKET:
+                CloseClientConnectionPacket closeClientConnectionPacket = (CloseClientConnectionPacket) packet;
+                netSysServer.getBedrockServerPool().removeServer(closeClientConnectionPacket.id, closeClientConnectionPacket.reason);
                 break;
         }
     }

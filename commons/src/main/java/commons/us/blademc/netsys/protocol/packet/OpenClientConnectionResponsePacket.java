@@ -4,14 +4,14 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
 
-public class OpenConnectionResponsePacket extends DataPacket {
+public class OpenClientConnectionResponsePacket extends DataPacket {
 
     public boolean accepted;
     public String clientID;
     public String serverID;
 
-    public OpenConnectionResponsePacket() {
-        super(ProtocolInfo.OPEN_CONNECTION_RESPONSE_PACKET);
+    public OpenClientConnectionResponsePacket() {
+        super(ProtocolInfo.OPEN_CLIENT_CONNECTION_RESPONSE_PACKET);
     }
 
     @Override

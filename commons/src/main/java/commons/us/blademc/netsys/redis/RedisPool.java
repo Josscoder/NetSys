@@ -104,9 +104,7 @@ public class RedisPool {
         packet.decode(input);
         netSys.getPacketHandler().handle(packet);
 
-        if (netSys.isDebug()) {
-            netSys.getLogger().debug("Packet " + packet.getClass().getName() + " decoded and handled!");
-        }
+        if (netSys.isDebug()) netSys.getLogger().debug("Packet " + packet.getClass().getName() + " decoded and handled!");
     }
 
     public void dataPacket(DataPacket packet) {
@@ -122,9 +120,7 @@ public class RedisPool {
 
             jedis.publish(filterID, output.toByteArray());
 
-            if (netSys.isDebug()) {
-                netSys.getLogger().debug("Packet " + packet.getClass().getName() + " encoded and sent!");
-            }
+            if (netSys.isDebug()) netSys.getLogger().debug("Packet " + packet.getClass().getName() + " encoded and sent!");
         });
     }
 

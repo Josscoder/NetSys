@@ -7,7 +7,7 @@ import commons.us.blademc.netsys.protocol.packet.types.PacketHelper;
 
 import java.net.InetSocketAddress;
 
-public class OpenConnectionRequestPacket extends DataPacket {
+public class OpenClientConnectionRequestPacket extends DataPacket {
 
     public String id;
     public String uuid;
@@ -16,8 +16,8 @@ public class OpenConnectionRequestPacket extends DataPacket {
     public String branch;
     public InetSocketAddress publicAddress;
 
-    public OpenConnectionRequestPacket() {
-        super(ProtocolInfo.OPEN_CONNECTION_REQUEST_PACKET);
+    public OpenClientConnectionRequestPacket() {
+        super(ProtocolInfo.OPEN_CLIENT_CONNECTION_REQUEST_PACKET);
     }
 
     @Override

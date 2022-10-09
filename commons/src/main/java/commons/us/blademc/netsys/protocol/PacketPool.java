@@ -2,25 +2,23 @@ package commons.us.blademc.netsys.protocol;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.packet.*;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class PacketPool {
 
     protected final NetSys netSys;
     protected final Map<Byte, Class<? extends DataPacket>> registeredPackets = new HashMap<>();
 
-    public PacketPool(NetSys netSys) {
-        this.netSys = netSys;
-    }
-
     public void init() {
         registerPacket(
-                new OpenConnectionRequestPacket(),
-                new OpenConnectionResponsePacket(),
-                new CloseConnectionPacket(),
+                new OpenClientConnectionRequestPacket(),
+                new OpenClientConnectionResponsePacket(),
+                new CloseClientConnectionPacket(),
                 new ServerDisconnectPacket()
         );
     }

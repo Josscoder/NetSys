@@ -27,13 +27,13 @@ public class ReportCommand extends Command {
         String playerName = args[0];
         String reasonOutput = args[1];
 
-        NetSysReports.getInstance().sync().getRedisPool().dataPacket(new ReportPacket(){{
-            id = UUID.randomUUID().toString().substring(0, 4);
-            server = NetSysClient.getInstance().getServiceInfo().getID();
-            sender = commandSender.getName();
-            target = playerName;
-            reason = reasonOutput;
-        }});
+        ReportPacket packet = new ReportPacket();
+        packet.id = UUID.randomUUID().toString().substring(0, 4);
+        packet.server = NetSysClient.getInstance().getServiceInfo().getID();
+        packet.sender = commandSender.getName();
+        packet.target = playerName;
+        packet.reason = reasonOutput;
+        NetSysReports.getInstance().sync().getRedisPool().dataPacket(packet);
 
         commandSender.sendMessage(NetSysReports.getInstance().getPrefix()
                 + TextFormat.GREEN + "Your report was sent!"

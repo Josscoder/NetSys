@@ -4,13 +4,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
 
-public class CloseConnectionPacket extends DataPacket {
+public class CloseClientConnectionPacket extends DataPacket {
 
     public String id;
     public String reason;
 
-    public CloseConnectionPacket() {
-        super(ProtocolInfo.CLOSE_CONNECTION_PACKET);
+    public CloseClientConnectionPacket() {
+        super(ProtocolInfo.CLOSE_CLIENT_CONNECTION_PACKET);
     }
 
     @Override

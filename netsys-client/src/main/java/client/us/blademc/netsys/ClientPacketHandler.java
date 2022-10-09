@@ -4,7 +4,7 @@ import commons.us.blademc.netsys.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
-import commons.us.blademc.netsys.protocol.packet.OpenConnectionResponsePacket;
+import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionResponsePacket;
 import commons.us.blademc.netsys.protocol.packet.ServerDisconnectPacket;
 
 public class ClientPacketHandler implements IPacketHandler {
@@ -16,19 +16,20 @@ public class ClientPacketHandler implements IPacketHandler {
         ClientServiceInfo serviceInfo = netSysClient.getServiceInfo();
 
         switch (packet.getPid()) {
-            case ProtocolInfo.OPEN_CONNECTION_RESPONSE_PACKET:
-                OpenConnectionResponsePacket openConnectionResponsePacket = (OpenConnectionResponsePacket) packet;
-                if (!openConnectionResponsePacket.clientID.equalsIgnoreCase(serviceInfo.getID())) return;
+            case ProtocolInfo.OPEN_CLIENT_CONNECTION_RESPONSE_PACKET:
+                OpenClientConnectionResponsePacket openClientConnectionResponsePacket = (OpenClientConnectionResponsePacket) packet;
+                if (!openClientConnectionResponsePacket.clientID.equalsIgnoreCase(serviceInfo.getID())) return;
 
-                if (!openConnectionResponsePacket.accepted) {
-                    netSys.getLogger().warn("§4Failed authentication, the proxy refused the connection");
+                if (!openClientConnectionResponsePacket.accepted) {
+                    netSys.getLogger().warn("§4Failed authentication, an NetSys-Server refused the connection, restarting...");
+                    netSysClient.getServer().shutdown();
                     return;
                 }
 
-                serviceInfo.setServerID(openConnectionResponsePacket.serverID);
+                serviceInfo.setServerID(openClientConnectionResponsePacket.serverID);
                 serviceInfo.setLogged(true);
-                netSys.getLogger().info("§bClient successfully connected to the Proxy: " + serviceInfo.getServerID());
-                netSys.getLogger().info("§aService Info: " + serviceInfo);
+                netSys.getLogger().warn("§bNetSys-client successfully connected to the NetSys-Server: " + serviceInfo.getServerID());
+                netSys.getLogger().warn("§aThe currently service info is: " + serviceInfo + ", §eType the command §6/whereaim§r§e in chat to see this again!");
                 break;
             case ProtocolInfo.SERVER_DISCONNECT_PACKET:
                 ServerDisconnectPacket serverDisconnectPacket = (ServerDisconnectPacket) packet;
@@ -37,7 +38,7 @@ public class ClientPacketHandler implements IPacketHandler {
                 serviceInfo.setServerID("NONE");
                 serviceInfo.setLogged(false);
 
-                netSys.getLogger().info("§cThe proxy has been disconnected!");
+                netSys.getLogger().warn("§cThe NetSys-Server has been disconnected!");
                 break;
         }
     }

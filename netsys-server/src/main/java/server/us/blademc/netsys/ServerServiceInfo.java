@@ -24,6 +24,10 @@ public class ServerServiceInfo {
         netSys.getRedisPool().dataPacket(packet);
     }
 
+    public String getShortUUID() {
+        return uuid.substring(0, 5);
+    }
+
     public String getID() {
         return String.format("%s-%s", region, name);
     }

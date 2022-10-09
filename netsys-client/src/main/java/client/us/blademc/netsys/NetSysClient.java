@@ -32,7 +32,7 @@ public class NetSysClient extends PluginBase {
 
         handleNetSys();
         handleService();
-        handleLoginSequence();
+        handleNetSysServerConnection();
 
         getServer().getCommandMap().register("whereaim", new WhereAImCommand());
     }
@@ -70,12 +70,12 @@ public class NetSysClient extends PluginBase {
     }
 
     @Getter
-    private ClientServiceInfo serviceInfo;
+    private ClientServiceInfo serviceInfo = null;
 
-    private void handleLoginSequence() {
+    private void handleNetSysServerConnection() {
         getServer().getScheduler().scheduleRepeatingTask(() -> {
             if (!serviceInfo.isLogged()) {
-                netSys.getLogger().info("§eStarting login sequence...");
+                netSys.getLogger().info("§eTrying to connect to a NetSys-Server...");
                 serviceInfo.login();
             }
         }, 20 * 10);
@@ -83,7 +83,7 @@ public class NetSysClient extends PluginBase {
 
     @Override
     public void onDisable() {
-        if (serviceInfo != null) serviceInfo.disconnect();
+        if (serviceInfo != null) serviceInfo.disconnect("Plugin disabled");
         if (netSys != null) netSys.stop();
     }
 }
