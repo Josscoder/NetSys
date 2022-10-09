@@ -5,8 +5,6 @@ import commons.us.blademc.netsys.redis.RedisPool;
 import dev.waterdog.waterdogpe.event.defaults.PreTransferEvent;
 import dev.waterdog.waterdogpe.event.defaults.ProxyPingEvent;
 import dev.waterdog.waterdogpe.event.defaults.ProxyQueryEvent;
-import dev.waterdog.waterdogpe.network.serverinfo.ServerInfo;
-import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.plugin.Plugin;
 import dev.waterdog.waterdogpe.utils.config.Configuration;
 import lombok.Getter;
@@ -88,7 +86,7 @@ public class NetSysServer extends Plugin {
     private void subscribeEvents() {
         getProxy().getEventManager().subscribe(ProxyQueryEvent.class, this::onQuery);
         getProxy().getEventManager().subscribe(ProxyPingEvent.class, this::onPing);
-        getProxy().getEventManager().subscribe(PreTransferEvent.class, this::onPreTransfer);
+        getProxy().getEventManager().subscribe(PreTransferEvent.class, this::onTransfer);
     }
 
     public void onQuery(ProxyQueryEvent event) {
@@ -99,15 +97,8 @@ public class NetSysServer extends Plugin {
         event.setMaximumPlayerCount(event.getPlayerCount() + 10);
     }
 
-    public void onPreTransfer(PreTransferEvent event) {
-        if (event.isCancelled()) return;
-
-        ProxiedPlayer player = event.getPlayer();
-
-        ServerInfo targetServer = event.getTargetServer();
-        if (player.getServerInfo().equals(targetServer)) return;
-
-        player.sendMessage("§aConnecting you to " + targetServer.getServerName());
+    public void onTransfer(PreTransferEvent event) {
+        event.getPlayer().sendMessage("§aConnecting you to " + event.getTargetServer().getServerName());
     }
 
     @Getter

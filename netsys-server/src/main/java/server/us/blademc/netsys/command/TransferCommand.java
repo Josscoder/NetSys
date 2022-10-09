@@ -11,7 +11,7 @@ public class TransferCommand extends Command {
     public TransferCommand() {
         super("transfer", CommandSettings.builder()
                 .setPermission("waterdog.command.transfer")
-                .setUsageMessage("transfer <server id>")
+                .setUsageMessage("/transfer <server id>")
                 .setDescription("Transfer to a specific server")
                 .build()
         );
@@ -27,9 +27,9 @@ public class TransferCommand extends Command {
         ProxiedPlayer player = (ProxiedPlayer) sender;
         if (args.length <= 0) {
             player.sendMessage("§aServers list: ");
-            player.getProxy().getServers().forEach(serverInfo -> player.sendMessage(player.getServerInfo().getServerName().equals(serverInfo.getServerName())
+            player.getProxy().getServers().forEach(serverInfo -> player.sendMessage((player.getServerInfo().getServerName().equals(serverInfo.getServerName())
                     ? "§6"
-                    : "§a" +
+                    : "§a") +
                     "- " + serverInfo.getServerName()
             ));
             return true;
