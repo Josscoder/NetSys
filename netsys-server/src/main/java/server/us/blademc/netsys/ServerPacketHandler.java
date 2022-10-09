@@ -7,7 +7,6 @@ import commons.us.blademc.netsys.protocol.packet.CloseConnectionPacket;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
 import commons.us.blademc.netsys.protocol.packet.OpenConnectionRequestPacket;
 import commons.us.blademc.netsys.protocol.packet.OpenConnectionResponsePacket;
-import commons.us.blademc.netsys.service.ServerServiceInfo;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.network.serverinfo.BedrockServerInfo;
 
@@ -29,7 +28,7 @@ public class ServerPacketHandler implements IPacketHandler {
                 String prefix = openConnectionRequestPacket.id;
 
                 OpenConnectionResponsePacket openConnectionResponsePacket = new OpenConnectionResponsePacket();
-                openConnectionResponsePacket.client = prefix;
+                openConnectionResponsePacket.clientID = prefix;
 
                 InetSocketAddress socketAddress = openConnectionRequestPacket.branch.toLowerCase().startsWith("dev")
                         ? new InetSocketAddress("127.0.0.1", openConnectionRequestPacket.publicAddress.getPort())
@@ -45,7 +44,7 @@ public class ServerPacketHandler implements IPacketHandler {
 
                 if (registered) {
                     openConnectionResponsePacket.accepted = true;
-                    openConnectionResponsePacket.server = serviceInfo.getID();
+                    openConnectionResponsePacket.serverID = serviceInfo.getID();
                     netSys.getRedisPool().dataPacket(openConnectionResponsePacket);
                     netSys.getLogger().warn("§a" + prefix + " Authentication accepted, new registered server!");
                     return;

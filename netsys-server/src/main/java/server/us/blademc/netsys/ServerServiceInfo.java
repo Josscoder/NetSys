@@ -1,4 +1,4 @@
-package commons.us.blademc.netsys.service;
+package server.us.blademc.netsys;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package commons.us.blademc.netsys.service;
+package client.us.blademc.netsys;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.packet.CloseConnectionPacket;

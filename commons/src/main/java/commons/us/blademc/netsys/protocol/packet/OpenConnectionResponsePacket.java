@@ -7,8 +7,8 @@ import commons.us.blademc.netsys.protocol.ProtocolInfo;
 public class OpenConnectionResponsePacket extends DataPacket {
 
     public boolean accepted;
-    public String client;
-    public String server;
+    public String clientID;
+    public String serverID;
 
     public OpenConnectionResponsePacket() {
         super(ProtocolInfo.OPEN_CONNECTION_RESPONSE_PACKET);
@@ -17,14 +17,14 @@ public class OpenConnectionResponsePacket extends DataPacket {
     @Override
     public void encode(ByteArrayDataOutput output) {
         output.writeBoolean(accepted);
-        output.writeUTF(client);
-        output.writeUTF(server);
+        output.writeUTF(clientID);
+        output.writeUTF(serverID);
     }
 
     @Override
     public void decode(ByteArrayDataInput input) {
         accepted = input.readBoolean();
-        client = input.readUTF();
-        server = input.readUTF();
+        clientID = input.readUTF();
+        serverID = input.readUTF();
     }
 }

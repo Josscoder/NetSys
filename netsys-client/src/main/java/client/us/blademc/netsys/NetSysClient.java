@@ -3,7 +3,6 @@ package client.us.blademc.netsys;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
-import commons.us.blademc.netsys.service.ClientServiceInfo;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.redis.RedisPool;
 import lombok.Getter;

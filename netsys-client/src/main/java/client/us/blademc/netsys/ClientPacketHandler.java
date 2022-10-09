@@ -6,7 +6,6 @@ import commons.us.blademc.netsys.protocol.ProtocolInfo;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
 import commons.us.blademc.netsys.protocol.packet.OpenConnectionResponsePacket;
 import commons.us.blademc.netsys.protocol.packet.ServerDisconnectPacket;
-import commons.us.blademc.netsys.service.ClientServiceInfo;
 
 public class ClientPacketHandler implements IPacketHandler {
 
@@ -19,14 +18,14 @@ public class ClientPacketHandler implements IPacketHandler {
         switch (packet.getPid()) {
             case ProtocolInfo.OPEN_CONNECTION_RESPONSE_PACKET:
                 OpenConnectionResponsePacket openConnectionResponsePacket = (OpenConnectionResponsePacket) packet;
-                if (!openConnectionResponsePacket.client.equalsIgnoreCase(serviceInfo.getID())) return;
+                if (!openConnectionResponsePacket.clientID.equalsIgnoreCase(serviceInfo.getID())) return;
 
                 if (!openConnectionResponsePacket.accepted) {
                     netSys.getLogger().warn("§4Failed authentication, the proxy refused the connection");
                     return;
                 }
 
-                serviceInfo.setServerID(openConnectionResponsePacket.server);
+                serviceInfo.setServerID(openConnectionResponsePacket.serverID);
                 serviceInfo.setLogged(true);
                 netSys.getLogger().info("§bClient successfully connected to the Proxy: " + serviceInfo.getServerID());
                 netSys.getLogger().info("§aService Info: " + serviceInfo);

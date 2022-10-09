@@ -2,7 +2,6 @@ package client.us.blademc.netsys;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import commons.us.blademc.netsys.service.ClientServiceInfo;
 
 public class WhereAImCommand extends Command {
 

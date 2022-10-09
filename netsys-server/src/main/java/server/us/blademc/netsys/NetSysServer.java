@@ -2,7 +2,6 @@ package server.us.blademc.netsys;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.redis.RedisPool;
-import commons.us.blademc.netsys.service.ServerServiceInfo;
 import dev.waterdog.waterdogpe.plugin.Plugin;
 import dev.waterdog.waterdogpe.utils.config.Configuration;
 import lombok.Getter;
