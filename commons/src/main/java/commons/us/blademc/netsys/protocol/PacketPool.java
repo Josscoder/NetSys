@@ -39,7 +39,6 @@ public class PacketPool {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }
