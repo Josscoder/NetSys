@@ -20,29 +20,21 @@ public class BedrockServerPool {
     protected final Map<String, BedrockServerInfo> storedServers = new HashMap<>();
 
     public void init() {
-        WaterdogScheduler.getInstance().scheduleRepeating(new Runnable() {
-            private final List<String> queueRemove = new ArrayList<>();
+        WaterdogScheduler.getInstance().scheduleRepeating(() -> {
+            if (netSys.isDebug()) netSys.getLogger().debug("Preparing to remove offline servers...");
 
-            @Override
-            public void run() {
-                if (netSys.isDebug()) netSys.getLogger().debug("Preparing to remove offline servers...");
+            storedServers.forEach((id, server) -> {
+                if (server.getPlayers().size() > 0) return;
 
-                storedServers.forEach((id, server) -> {
-                    if (server.getPlayers().size() > 0) return;
+                try {
+                    server.ping(5, TimeUnit.SECONDS).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    removeServer(id, "Do not respond to ping");
+                    netSys.getLogger().warn("§6" + id + " NetSys-Client was removed because it did not answer the ping!");
+                }
+            });
 
-                    try {
-                        server.ping(5, TimeUnit.SECONDS).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        queueRemove.add(id);
-                        netSys.getLogger().warn("§6" + id + " NetSys-Client was added to the queue to be removed because it did not answer the ping!");
-                    }
-                });
-
-                queueRemove.forEach(serverName -> removeServer(serverName, "Do not respond to ping"));
-                queueRemove.clear();
-
-                if (netSys.isDebug()) netSys.getLogger().debug("Removed all offline servers!");
-            }
+            if (netSys.isDebug()) netSys.getLogger().debug("Removed all offline servers!");
         }, 20 * 60);
     }
 
