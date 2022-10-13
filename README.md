@@ -34,14 +34,17 @@ Network communication system written in Java using Redis
 
 ```gradle
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
 	
-	dependencies {
-	        implementation 'com.github.TheBladeMC:NetSys:Tag'
-	}	
+dependencies {
+	implementation 'com.github.TheBladeMC.NetSys:subproject:Tag'
+}	
 ```
 </details>
+
+## License
+NetSys is licensed under the permissive GNU GENERAL PUBLIC LICENSE Version 3. Please see [`LICENSE`](https://github.com/Josscoder/NetSys/blob/dev/LICENSE) for more information.
