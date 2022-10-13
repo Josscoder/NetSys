@@ -12,6 +12,9 @@ import server.us.blademc.netsys.command.GotoCommand;
 import server.us.blademc.netsys.command.TransferCommand;
 import server.us.blademc.netsys.listener.JoinHandler;
 import server.us.blademc.netsys.listener.ReconnectHandler;
+import server.us.blademc.netsys.logger.ServerLogger;
+import server.us.blademc.netsys.packetHandler.ServerPacketHandler;
+import server.us.blademc.netsys.service.ServerServiceInfo;
 
 @Getter
 public class NetSysServer extends Plugin {
@@ -65,7 +68,7 @@ public class NetSysServer extends Plugin {
     private void handleService() {
         Configuration config = getConfig();
         serviceInfo = new ServerServiceInfo(netSys,
-                config.getString("serviceInfo.name"),
+                config.getString("serviceInfo.id"),
                 config.getString("serviceInfo.type"),
                 config.getString("serviceInfo.region"),
                 config.getString("serviceInfo.branch")
@@ -98,7 +101,7 @@ public class NetSysServer extends Plugin {
     }
 
     public void onTransfer(PreTransferEvent event) {
-        event.getPlayer().sendMessage("§aConnecting you to " + event.getTargetServer().getServerName());
+        event.getPlayer().sendMessage("§7Connecting you to " + event.getTargetServer().getServerName());
     }
 
     @Getter

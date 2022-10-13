@@ -1,4 +1,4 @@
-package server.us.blademc.netsys;
+package server.us.blademc.netsys.packetHandler;
 
 import commons.us.blademc.netsys.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
@@ -9,6 +9,8 @@ import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionRequestPack
 import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionResponsePacket;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.network.serverinfo.BedrockServerInfo;
+import server.us.blademc.netsys.NetSysServer;
+import server.us.blademc.netsys.service.ServerServiceInfo;
 
 import java.net.InetSocketAddress;
 
@@ -56,7 +58,10 @@ public class ServerPacketHandler implements IPacketHandler {
                 break;
             case ProtocolInfo.CLOSE_CLIENT_CONNECTION_PACKET:
                 CloseClientConnectionPacket closeClientConnectionPacket = (CloseClientConnectionPacket) packet;
-                netSysServer.getBedrockServerPool().removeServer(closeClientConnectionPacket.id, closeClientConnectionPacket.reason);
+                netSysServer.getBedrockServerPool().removeServer(
+                        closeClientConnectionPacket.id,
+                        closeClientConnectionPacket.reason
+                );
                 break;
         }
     }

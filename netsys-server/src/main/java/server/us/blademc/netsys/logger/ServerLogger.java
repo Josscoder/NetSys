@@ -1,8 +1,9 @@
-package server.us.blademc.netsys;
+package server.us.blademc.netsys.logger;
 
 import commons.us.blademc.netsys.ILoggerHandler;
 import dev.waterdog.waterdogpe.logger.Color;
 import org.apache.logging.log4j.Logger;
+import server.us.blademc.netsys.NetSysServer;
 
 public class ServerLogger implements ILoggerHandler {
 

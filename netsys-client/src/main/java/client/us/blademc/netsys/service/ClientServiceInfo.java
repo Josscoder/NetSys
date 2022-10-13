@@ -1,4 +1,4 @@
-package client.us.blademc.netsys;
+package client.us.blademc.netsys.service;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.packet.CloseClientConnectionPacket;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.net.InetSocketAddress;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Getter
@@ -16,7 +15,8 @@ import java.util.UUID;
 public class ClientServiceInfo {
 
     private final NetSys netSys;
-    private final String uuid = UUID.randomUUID().toString();
+
+    private final String id;
     private final String type;
     private final String region;
     private final String branch;
@@ -30,7 +30,6 @@ public class ClientServiceInfo {
 
         OpenClientConnectionRequestPacket packet = new OpenClientConnectionRequestPacket();
         packet.id = getID();
-        packet.uuid = uuid;
         packet.type = type;
         packet.region = region;
         packet.branch = branch;
@@ -39,12 +38,8 @@ public class ClientServiceInfo {
         netSys.getRedisPool().dataPacket(packet);
     }
 
-    public String getShortUUID() {
-        return uuid.substring(0, 5);
-    }
-
     public String getID() {
-        return String.format("%s-%s", type, getShortUUID());
+        return String.format("%s-%s", type, id);
     }
 
     public void disconnect(String reason) {
@@ -59,6 +54,6 @@ public class ClientServiceInfo {
 
     @Override
     public String toString() {
-        return String.format("§e%s-%s-%s §a(§e%s§a)", region, getID(), branch, serverID);
+        return String.format("%s-%s-%s (%s)", region, getID(), branch, serverID);
     }
 }

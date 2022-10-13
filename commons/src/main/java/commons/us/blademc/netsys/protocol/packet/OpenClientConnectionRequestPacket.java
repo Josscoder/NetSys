@@ -10,7 +10,6 @@ import java.net.InetSocketAddress;
 public class OpenClientConnectionRequestPacket extends DataPacket {
 
     public String id;
-    public String uuid;
     public String type;
     public String region;
     public String branch;
@@ -23,7 +22,6 @@ public class OpenClientConnectionRequestPacket extends DataPacket {
     @Override
     public void encode(ByteArrayDataOutput output) {
         output.writeUTF(id);
-        output.writeUTF(uuid);
         output.writeUTF(type);
         output.writeUTF(region);
         output.writeUTF(branch);
@@ -33,7 +31,6 @@ public class OpenClientConnectionRequestPacket extends DataPacket {
     @Override
     public void decode(ByteArrayDataInput input) {
         id = input.readUTF();
-        uuid = input.readUTF();
         type = input.readUTF();
         region = input.readUTF();
         branch = input.readUTF();

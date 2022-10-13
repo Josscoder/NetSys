@@ -1,5 +1,7 @@
-package client.us.blademc.netsys;
+package client.us.blademc.netsys.packetHandler;
 
+import client.us.blademc.netsys.service.ClientServiceInfo;
+import client.us.blademc.netsys.NetSysClient;
 import commons.us.blademc.netsys.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;

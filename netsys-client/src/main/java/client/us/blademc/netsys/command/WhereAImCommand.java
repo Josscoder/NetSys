@@ -1,5 +1,7 @@
-package client.us.blademc.netsys;
+package client.us.blademc.netsys.command;
 
+import client.us.blademc.netsys.NetSysClient;
+import client.us.blademc.netsys.service.ClientServiceInfo;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 

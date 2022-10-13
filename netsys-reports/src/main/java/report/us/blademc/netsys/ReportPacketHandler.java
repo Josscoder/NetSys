@@ -1,6 +1,6 @@
 package report.us.blademc.netsys;
 
-import client.us.blademc.netsys.ClientPacketHandler;
+import client.us.blademc.netsys.packetHandler.ClientPacketHandler;
 import cn.nukkit.Server;
 import cn.nukkit.level.Sound;
 import cn.nukkit.utils.TextFormat;

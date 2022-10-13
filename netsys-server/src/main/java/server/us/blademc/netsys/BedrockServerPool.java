@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class BedrockServerPool {
 
     protected final NetSys netSys;
+
     protected final Map<String, BedrockServerInfo> storedServers = new HashMap<>();
 
     public void init() {
@@ -66,7 +67,9 @@ public class BedrockServerPool {
     }
 
     public List<BedrockServerInfo> getLobbyServers() {
-        return filterServers(serverInfo -> serverInfo.getServerName().startsWith("lobby-"));
+        return filterServers(serverInfo -> serverInfo.getServerName().startsWith("lobby-") ||
+                serverInfo.getServerName().startsWith("hub-")
+        );
     }
 
     public List<BedrockServerInfo> getSortedServers(List<BedrockServerInfo> serverList) {

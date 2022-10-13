@@ -1,5 +1,9 @@
 package client.us.blademc.netsys;
 
+import client.us.blademc.netsys.command.WhereAImCommand;
+import client.us.blademc.netsys.logger.ClientLogger;
+import client.us.blademc.netsys.packetHandler.ClientPacketHandler;
+import client.us.blademc.netsys.service.ClientServiceInfo;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
@@ -59,6 +63,7 @@ public class NetSysClient extends PluginBase {
         ConfigSection serviceSection = getConfig().getSection("serviceInfo");
         serviceInfo = new ClientServiceInfo(
                 netSys,
+                serviceSection.getString("id"),
                 serviceSection.getString("type"),
                 serviceSection.getString("region"),
                 serviceSection.getString("branch"),

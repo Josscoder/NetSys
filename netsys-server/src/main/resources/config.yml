@@ -1,5 +1,5 @@
 serviceInfo:
-  name: "proxy-1"
+  id: "proxy-1"
   type: "proxy"
   region: "na"
   branch: "dev"

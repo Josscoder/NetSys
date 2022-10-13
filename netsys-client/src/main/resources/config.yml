@@ -1,4 +1,5 @@
 serviceInfo:
+  id: "lobby-1"
   type: "lobby"
   region: "na"
   branch: "dev"

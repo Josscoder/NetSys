@@ -1,4 +1,4 @@
-package server.us.blademc.netsys;
+package server.us.blademc.netsys.service;
 
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.packet.ServerDisconnectPacket;
@@ -12,8 +12,8 @@ import java.util.UUID;
 public class ServerServiceInfo {
 
     private final NetSys netSys;
-    private final String uuid = UUID.randomUUID().toString();
-    private final String name;
+
+    private final String id;
     private final String type;
     private final String region;
     private final String branch;
@@ -24,12 +24,8 @@ public class ServerServiceInfo {
         netSys.getRedisPool().dataPacket(packet);
     }
 
-    public String getShortUUID() {
-        return uuid.substring(0, 5);
-    }
-
     public String getID() {
-        return String.format("%s-%s", region, name);
+        return String.format("%s-%s", region, id);
     }
 
     @Override
