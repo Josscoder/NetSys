@@ -34,7 +34,7 @@ jobs:
           artifacts: ${{ github.workspace }}/commons/target/*.jar, ${{ github.workspace }}/netsys-client/target/*.jar, ${{ github.workspace }}/netsys-server/target/*.jar
           draft: false
           name: NetSys Release
-          tag: v1.0
+          tag: v1.1
           token: ${{ secrets.GITHUB_TOKEN }}
           body: "The artifacts are kept up to date with the branch release."
           commit: ${{ github.sha }}
