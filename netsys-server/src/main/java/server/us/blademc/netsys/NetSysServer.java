@@ -9,11 +9,11 @@ import dev.waterdog.waterdogpe.plugin.Plugin;
 import dev.waterdog.waterdogpe.utils.config.Configuration;
 import lombok.Getter;
 import server.us.blademc.netsys.command.GotoCommand;
-import server.us.blademc.netsys.command.TransferCommand;
+import server.us.blademc.netsys.group.ServerGroupHandler;
 import server.us.blademc.netsys.listener.JoinHandler;
 import server.us.blademc.netsys.listener.ReconnectHandler;
 import server.us.blademc.netsys.logger.ServerLogger;
-import server.us.blademc.netsys.packetHandler.ServerPacketHandler;
+import server.us.blademc.netsys.protocol.ServerPacketHandler;
 import server.us.blademc.netsys.service.ServerServiceInfo;
 
 @Getter
@@ -38,15 +38,16 @@ public class NetSysServer extends Plugin {
 
         handleService();
 
-        bedrockServerPool = new BedrockServerPool(netSys);
-        bedrockServerPool.init();
+        groupHandler = new ServerGroupHandler(netSys);
+        groupHandler.init();
 
         rewriteHandlers();
-        registerCommands();
         subscribeEvents();
+
+        getProxy().getCommandMap().registerCommand(new GotoCommand());
     }
 
-    private BedrockServerPool bedrockServerPool;
+    private ServerGroupHandler groupHandler;
 
     private void handleNetSys() {
         netSys = new NetSys();
@@ -79,11 +80,6 @@ public class NetSysServer extends Plugin {
     private void rewriteHandlers() {
         getProxy().setJoinHandler(new JoinHandler());
         getProxy().setReconnectHandler(new ReconnectHandler());
-    }
-
-    private void registerCommands() {
-        getProxy().getCommandMap().registerCommand(new GotoCommand());
-        getProxy().getCommandMap().registerCommand(new TransferCommand());
     }
 
     private void subscribeEvents() {

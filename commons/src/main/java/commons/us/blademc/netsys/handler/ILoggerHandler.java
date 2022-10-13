@@ -1,4 +1,4 @@
-package commons.us.blademc.netsys;
+package commons.us.blademc.netsys.handler;
 
 public interface ILoggerHandler {
     void info(String message);

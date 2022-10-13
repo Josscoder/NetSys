@@ -1,8 +1,9 @@
-package report.us.blademc.netsys;
+package report.us.blademc.netsys.protocol.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
+import report.us.blademc.netsys.NetSysReports;
 
 public class ReportPacket extends DataPacket {
 

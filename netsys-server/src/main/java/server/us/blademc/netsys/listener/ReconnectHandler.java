@@ -20,6 +20,6 @@ public class ReconnectHandler implements IReconnectHandler {
                 "§aWe'll connect you to a lobby shortly..."
         );
 
-        return NetSysServer.getInstance().getBedrockServerPool().getBalancedLobbyServer();
+        return NetSysServer.getInstance().getGroupHandler().getBalancedLobbyServer();
     }
 }

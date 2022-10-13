@@ -3,7 +3,7 @@ package client.us.blademc.netsys.logger;
 import client.us.blademc.netsys.NetSysClient;
 import cn.nukkit.plugin.PluginLogger;
 import cn.nukkit.utils.TextFormat;
-import commons.us.blademc.netsys.ILoggerHandler;
+import commons.us.blademc.netsys.handler.ILoggerHandler;
 
 public class ClientLogger implements ILoggerHandler {
 

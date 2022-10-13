@@ -1,9 +1,16 @@
 package client.us.blademc.netsys;
 
+import client.us.blademc.netsys.command.HubCommand;
+import client.us.blademc.netsys.command.TransferCommand;
 import client.us.blademc.netsys.command.WhereAImCommand;
+import client.us.blademc.netsys.group.ClientGroupHandler;
+import client.us.blademc.netsys.listener.ClientDataUpdateListener;
 import client.us.blademc.netsys.logger.ClientLogger;
-import client.us.blademc.netsys.packetHandler.ClientPacketHandler;
+import client.us.blademc.netsys.protocol.ClientPacketHandler;
 import client.us.blademc.netsys.service.ClientServiceInfo;
+import cn.nukkit.Player;
+import cn.nukkit.command.SimpleCommandMap;
+import cn.nukkit.network.protocol.TransferPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
@@ -13,6 +20,7 @@ import lombok.Getter;
 
 import java.net.InetSocketAddress;
 
+@Getter
 public class NetSysClient extends PluginBase {
 
     @Getter
@@ -35,11 +43,18 @@ public class NetSysClient extends PluginBase {
         saveDefaultConfig();
 
         handleNetSys();
+
         handleService();
         handleNetSysServerConnection();
 
-        getServer().getCommandMap().register("whereaim", new WhereAImCommand());
+        registerCommands();
+
+        getServer().getPluginManager().registerEvents(new ClientDataUpdateListener(), this);
+
+        groupHandler = new ClientGroupHandler(netSys);
     }
+
+    private ClientGroupHandler groupHandler;
 
     private void handleNetSys() {
         netSys = new NetSys();
@@ -74,7 +89,6 @@ public class NetSysClient extends PluginBase {
         );
     }
 
-    @Getter
     private ClientServiceInfo serviceInfo = null;
 
     private void handleNetSysServerConnection() {
@@ -84,6 +98,20 @@ public class NetSysClient extends PluginBase {
                 serviceInfo.login();
             }
         }, 20 * 10);
+    }
+
+    private void registerCommands() {
+        SimpleCommandMap map = getServer().getCommandMap();
+        map.register("whereaim", new WhereAImCommand());
+        map.register("transfer", new TransferCommand());
+        map.register("hub", new HubCommand());
+    }
+
+    public void transferPlayer(Player player, String serverID) {
+        TransferPacket packet = new TransferPacket();
+        packet.address = serverID;
+        packet.port = 0;
+        player.dataPacket(packet);
     }
 
     @Override

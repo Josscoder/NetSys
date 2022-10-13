@@ -1,6 +1,6 @@
-package server.us.blademc.netsys.packetHandler;
+package server.us.blademc.netsys.protocol;
 
-import commons.us.blademc.netsys.IPacketHandler;
+import commons.us.blademc.netsys.handler.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
 import commons.us.blademc.netsys.protocol.packet.CloseClientConnectionPacket;
@@ -48,7 +48,7 @@ public class ServerPacketHandler implements IPacketHandler {
                 if (registered) {
                     openClientConnectionResponsePacket.serverID = serviceInfo.getID();
                     netSys.getRedisPool().dataPacket(openClientConnectionResponsePacket);
-                    netSysServer.getBedrockServerPool().storeServer(bedrockServerInfo);
+                    netSysServer.getGroupHandler().storeServer(bedrockServerInfo);
                     netSys.getLogger().info(prefix + " Authentication accepted, new registered NetSys-Client!");
                     return;
                 }
@@ -58,7 +58,7 @@ public class ServerPacketHandler implements IPacketHandler {
                 break;
             case ProtocolInfo.CLOSE_CLIENT_CONNECTION_PACKET:
                 CloseClientConnectionPacket closeClientConnectionPacket = (CloseClientConnectionPacket) packet;
-                netSysServer.getBedrockServerPool().removeServer(
+                netSysServer.getGroupHandler().removeServer(
                         closeClientConnectionPacket.id,
                         closeClientConnectionPacket.reason
                 );

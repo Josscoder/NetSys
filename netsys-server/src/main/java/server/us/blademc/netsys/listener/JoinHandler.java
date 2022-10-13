@@ -9,6 +9,6 @@ public class JoinHandler implements IJoinHandler {
 
     @Override
     public ServerInfo determineServer(ProxiedPlayer proxiedPlayer) {
-        return NetSysServer.getInstance().getBedrockServerPool().getBalancedLobbyServer();
+        return NetSysServer.getInstance().getGroupHandler().getBalancedLobbyServer();
     }
 }
