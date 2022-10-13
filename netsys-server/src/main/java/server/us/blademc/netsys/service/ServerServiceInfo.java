@@ -5,8 +5,6 @@ import commons.us.blademc.netsys.protocol.packet.ServerDisconnectPacket;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @Getter
 public class ServerServiceInfo {

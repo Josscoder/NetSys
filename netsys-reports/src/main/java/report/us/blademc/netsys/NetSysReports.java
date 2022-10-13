@@ -4,6 +4,9 @@ import client.us.blademc.netsys.NetSysClient;
 import cn.nukkit.plugin.PluginBase;
 import commons.us.blademc.netsys.NetSys;
 import lombok.Getter;
+import report.us.blademc.netsys.command.ReportCommand;
+import report.us.blademc.netsys.protocol.packet.ReportPacket;
+import report.us.blademc.netsys.protocol.ReportPacketHandler;
 
 @Getter
 public class NetSysReports extends PluginBase {

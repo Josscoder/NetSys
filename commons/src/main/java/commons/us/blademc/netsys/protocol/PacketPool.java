@@ -19,7 +19,8 @@ public class PacketPool {
                 new OpenClientConnectionRequestPacket(),
                 new OpenClientConnectionResponsePacket(),
                 new CloseClientConnectionPacket(),
-                new ServerDisconnectPacket()
+                new ServerDisconnectPacket(),
+                new NetworkUpdateDataPacket()
         );
     }
 

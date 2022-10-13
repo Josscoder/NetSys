@@ -1,10 +1,12 @@
-package report.us.blademc.netsys;
+package report.us.blademc.netsys.command;
 
 import client.us.blademc.netsys.NetSysClient;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
+import report.us.blademc.netsys.NetSysReports;
+import report.us.blademc.netsys.protocol.packet.ReportPacket;
 
 import java.util.Arrays;
 import java.util.UUID;

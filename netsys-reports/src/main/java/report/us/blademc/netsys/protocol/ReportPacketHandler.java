@@ -1,10 +1,12 @@
-package report.us.blademc.netsys;
+package report.us.blademc.netsys.protocol;
 
-import client.us.blademc.netsys.packetHandler.ClientPacketHandler;
+import client.us.blademc.netsys.protocol.ClientPacketHandler;
 import cn.nukkit.Server;
 import cn.nukkit.level.Sound;
 import cn.nukkit.utils.TextFormat;
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
+import report.us.blademc.netsys.NetSysReports;
+import report.us.blademc.netsys.protocol.packet.ReportPacket;
 
 public class ReportPacketHandler extends ClientPacketHandler {
 
