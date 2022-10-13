@@ -6,5 +6,5 @@ public interface ProtocolInfo {
             OPEN_CLIENT_CONNECTION_RESPONSE_PACKET = 0x02,
             CLOSE_CLIENT_CONNECTION_PACKET = 0x03,
             SERVER_DISCONNECT_PACKET = 0x04,
-            CLIENT_UPDATE_DATA_PACKET = 0x05;
+            NETWORK_UPDATE_DATA = 0x05;
 }

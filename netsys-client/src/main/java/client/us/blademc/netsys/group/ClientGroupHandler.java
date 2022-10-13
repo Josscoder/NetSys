@@ -1,6 +1,7 @@
 package client.us.blademc.netsys.group;
 
 import commons.us.blademc.netsys.NetSys;
+import commons.us.blademc.netsys.cache.ServerCache;
 import commons.us.blademc.netsys.group.GroupHandler;
 
 import java.util.Comparator;
@@ -38,9 +39,13 @@ public class ClientGroupHandler extends GroupHandler<ServerCache> {
         return getServer(serverName) != null;
     }
 
-    public void updateServerData(ServerCache serverCache) {
-        servers.remove(serverCache.getName());
-        storeServer(serverCache);
+    public void clearData() {
+        servers.clear();
+    }
+
+    public void updateData(List<ServerCache> serverList) {
+        clearData();
+        serverList.forEach(this::storeServer);
     }
 
     @Override

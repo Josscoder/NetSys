@@ -4,7 +4,6 @@ import client.us.blademc.netsys.command.HubCommand;
 import client.us.blademc.netsys.command.TransferCommand;
 import client.us.blademc.netsys.command.WhereAImCommand;
 import client.us.blademc.netsys.group.ClientGroupHandler;
-import client.us.blademc.netsys.listener.ClientDataUpdateListener;
 import client.us.blademc.netsys.logger.ClientLogger;
 import client.us.blademc.netsys.protocol.ClientPacketHandler;
 import client.us.blademc.netsys.service.ClientServiceInfo;
@@ -48,8 +47,6 @@ public class NetSysClient extends PluginBase {
         handleNetSysServerConnection();
 
         registerCommands();
-
-        getServer().getPluginManager().registerEvents(new ClientDataUpdateListener(), this);
 
         groupHandler = new ClientGroupHandler(netSys);
     }

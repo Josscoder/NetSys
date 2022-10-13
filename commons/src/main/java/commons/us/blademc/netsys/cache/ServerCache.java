@@ -1,4 +1,4 @@
-package client.us.blademc.netsys.group;
+package commons.us.blademc.netsys.cache;
 
 import lombok.Data;
 

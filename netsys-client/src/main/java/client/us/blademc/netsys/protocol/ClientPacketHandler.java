@@ -1,6 +1,5 @@
 package client.us.blademc.netsys.protocol;
 
-import client.us.blademc.netsys.group.ServerCache;
 import client.us.blademc.netsys.service.ClientServiceInfo;
 import client.us.blademc.netsys.NetSysClient;
 import commons.us.blademc.netsys.handler.IPacketHandler;
@@ -19,18 +18,7 @@ public class ClientPacketHandler implements IPacketHandler {
         switch (packet.getPid()) {
             case ProtocolInfo.OPEN_CLIENT_CONNECTION_RESPONSE_PACKET:
                 OpenClientConnectionResponsePacket openClientConnectionResponsePacket = (OpenClientConnectionResponsePacket) packet;
-                if (!openClientConnectionResponsePacket.clientID.equalsIgnoreCase(serviceInfo.getID())) {
-                    if (!openClientConnectionResponsePacket.accepted ||
-                            !openClientConnectionResponsePacket.serverID.equalsIgnoreCase(serviceInfo.getServerID())
-                    ) {
-                        return;
-                    }
-
-                    netSysClient.getGroupHandler().storeServer(
-                            new ServerCache(openClientConnectionResponsePacket.clientID)
-                    );
-                    return;
-                }
+                if (!openClientConnectionResponsePacket.clientID.equalsIgnoreCase(serviceInfo.getID())) return;
 
                 if (!openClientConnectionResponsePacket.accepted) {
                     netSys.getLogger().warn("§4Failed authentication, an NetSys-Server refused the connection, restarting...");
@@ -56,14 +44,9 @@ public class ClientPacketHandler implements IPacketHandler {
                 CloseClientConnectionPacket closeClientConnectionPacket = (CloseClientConnectionPacket) packet;
                 netSysClient.getGroupHandler().removeServer(closeClientConnectionPacket.id, closeClientConnectionPacket.reason);
                 break;
-            case ProtocolInfo.CLIENT_UPDATE_DATA_PACKET:
-                ClientUpdateDataPacket clientUpdateDataPacket = (ClientUpdateDataPacket) packet;
-                if (!netSysClient.getGroupHandler().containsServer(clientUpdateDataPacket.id)) return;
-
-                ServerCache cache = new ServerCache(clientUpdateDataPacket.id);
-                cache.setPlayers(clientUpdateDataPacket.players);
-
-                netSysClient.getGroupHandler().updateServerData(cache);
+            case ProtocolInfo.NETWORK_UPDATE_DATA:
+                NetworkUpdateDataPacket networkUpdateDataPacket = (NetworkUpdateDataPacket) packet;
+                netSysClient.getGroupHandler().updateData(networkUpdateDataPacket.serverList);
                 break;
         }
     }

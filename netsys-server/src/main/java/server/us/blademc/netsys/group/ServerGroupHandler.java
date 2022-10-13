@@ -1,9 +1,12 @@
 package server.us.blademc.netsys.group;
 
 import commons.us.blademc.netsys.NetSys;
+import commons.us.blademc.netsys.cache.ServerCache;
 import commons.us.blademc.netsys.group.GroupHandler;
+import commons.us.blademc.netsys.protocol.packet.NetworkUpdateDataPacket;
 import dev.waterdog.waterdogpe.ProxyServer;
 import dev.waterdog.waterdogpe.network.serverinfo.BedrockServerInfo;
+import dev.waterdog.waterdogpe.player.ProxiedPlayer;
 import dev.waterdog.waterdogpe.scheduler.WaterdogScheduler;
 
 import java.util.*;
@@ -39,7 +42,25 @@ public class ServerGroupHandler extends GroupHandler<BedrockServerInfo> {
 
             queueRemove.forEach(id -> removeServer(id, "Do not respond to ping"));
             if (netSys.isDebug()) netSys.getLogger().debug("Removed all offline servers!");
+
+            if (netSys.isDebug()) netSys.getLogger().debug("Updating network data...");
+            handleNetworkDataUpdate();
+            if (netSys.isDebug()) netSys.getLogger().debug("Network data has been updated....");
         }, 20 * 60);
+    }
+
+    private void handleNetworkDataUpdate() {
+        NetworkUpdateDataPacket packet = new NetworkUpdateDataPacket();
+        List<ServerCache> serverCacheList = new LinkedList<>();
+
+        servers.values().forEach(bedrockServerInfo -> {
+            ServerCache cache = new ServerCache(bedrockServerInfo.getServerName());
+            cache.setPlayers(bedrockServerInfo.getPlayers().stream().map(ProxiedPlayer::getName).collect(Collectors.toList()));
+            serverCacheList.add(cache);
+        });
+
+        packet.serverList = serverCacheList;
+        netSys.getRedisPool().dataPacket(packet);
     }
 
     @Override

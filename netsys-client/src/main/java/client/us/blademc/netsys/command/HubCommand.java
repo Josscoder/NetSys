@@ -1,7 +1,7 @@
 package client.us.blademc.netsys.command;
 
 import client.us.blademc.netsys.NetSysClient;
-import client.us.blademc.netsys.group.ServerCache;
+import commons.us.blademc.netsys.cache.ServerCache;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
