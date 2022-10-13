@@ -29,7 +29,7 @@ public class ReportCommand extends Command {
         String reasonOutput = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
         ReportPacket packet = new ReportPacket();
-        packet.id = UUID.randomUUID().toString().substring(0, 3);
+        packet.uuid = UUID.randomUUID().toString().substring(0, 3);
         packet.server = NetSysClient.getInstance().getServiceInfo().getID();
         packet.sender = sender.getName();
         packet.target = playerName;

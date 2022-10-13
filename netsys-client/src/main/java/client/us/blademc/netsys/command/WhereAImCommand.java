@@ -11,7 +11,7 @@ public class WhereAImCommand extends Command {
         super("whereaim",
                 "Provide information about the server you are on",
                 "",
-                new String[]{"server"}
+                new String[]{"connection"}
         );
     }
 

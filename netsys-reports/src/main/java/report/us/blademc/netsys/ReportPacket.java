@@ -6,7 +6,7 @@ import commons.us.blademc.netsys.protocol.packet.DataPacket;
 
 public class ReportPacket extends DataPacket {
 
-    public String id;
+    public String uuid;
     public String sender;
     public String target;
     public String reason;
@@ -18,7 +18,7 @@ public class ReportPacket extends DataPacket {
 
     @Override
     public void encode(ByteArrayDataOutput output) {
-        output.writeUTF(id);
+        output.writeUTF(uuid);
         output.writeUTF(sender);
         output.writeUTF(target);
         output.writeUTF(reason);
@@ -27,7 +27,7 @@ public class ReportPacket extends DataPacket {
 
     @Override
     public void decode(ByteArrayDataInput input) {
-        id = input.readUTF();
+        uuid = input.readUTF();
         sender = input.readUTF();
         target = input.readUTF();
         reason = input.readUTF();

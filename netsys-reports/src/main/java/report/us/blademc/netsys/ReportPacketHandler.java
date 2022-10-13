@@ -18,7 +18,7 @@ public class ReportPacketHandler extends ClientPacketHandler {
         ReportPacket reportPacket = (ReportPacket) packet;
 
         String output = NetSysReports.getInstance().getPrefix() + TextFormat.RED + String.format("(%s-%s) %s was reported by %s for %s!",
-                reportPacket.id.toUpperCase(),
+                reportPacket.uuid.toUpperCase(),
                 reportPacket.server,
                 reportPacket.target,
                 reportPacket.sender,
