@@ -1,13 +1,11 @@
-package client.us.blademc.netsys.packetHandler;
+package client.us.blademc.netsys.protocol;
 
 import client.us.blademc.netsys.service.ClientServiceInfo;
 import client.us.blademc.netsys.NetSysClient;
-import commons.us.blademc.netsys.IPacketHandler;
+import commons.us.blademc.netsys.handler.IPacketHandler;
 import commons.us.blademc.netsys.NetSys;
 import commons.us.blademc.netsys.protocol.ProtocolInfo;
-import commons.us.blademc.netsys.protocol.packet.DataPacket;
-import commons.us.blademc.netsys.protocol.packet.OpenClientConnectionResponsePacket;
-import commons.us.blademc.netsys.protocol.packet.ServerDisconnectPacket;
+import commons.us.blademc.netsys.protocol.packet.*;
 
 public class ClientPacketHandler implements IPacketHandler {
 
@@ -41,6 +39,14 @@ public class ClientPacketHandler implements IPacketHandler {
                 serviceInfo.setLogged(false);
 
                 netSys.getLogger().warn("§cThe NetSys-Server has been disconnected!");
+                break;
+            case ProtocolInfo.CLOSE_CLIENT_CONNECTION_PACKET:
+                CloseClientConnectionPacket closeClientConnectionPacket = (CloseClientConnectionPacket) packet;
+                netSysClient.getGroupHandler().removeServer(closeClientConnectionPacket.id, closeClientConnectionPacket.reason);
+                break;
+            case ProtocolInfo.NETWORK_UPDATE_DATA:
+                NetworkUpdateDataPacket networkUpdateDataPacket = (NetworkUpdateDataPacket) packet;
+                netSysClient.getGroupHandler().updateData(networkUpdateDataPacket.serverList);
                 break;
         }
     }

@@ -10,7 +10,7 @@ public class WhereAImCommand extends Command {
     public WhereAImCommand() {
         super("whereaim",
                 "Provide information about the server you are on",
-                "",
+                "/whereaim",
                 new String[]{"connection"}
         );
     }

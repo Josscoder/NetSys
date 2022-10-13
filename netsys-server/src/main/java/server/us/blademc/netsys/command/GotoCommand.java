@@ -18,10 +18,7 @@ public class GotoCommand extends Command {
 
     @Override
     public boolean onExecute(CommandSender sender, String alias, String[] args) {
-        if (!sender.isPlayer()) {
-            sender.sendMessage("This command can only be ran by players");
-            return false;
-        }
+        if (!sender.isPlayer()) return false;
 
         ProxiedPlayer player = (ProxiedPlayer) sender;
         if (args.length <= 0) return false;

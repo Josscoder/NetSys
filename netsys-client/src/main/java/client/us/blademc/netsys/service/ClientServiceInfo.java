@@ -52,6 +52,10 @@ public class ClientServiceInfo {
         netSys.getRedisPool().dataPacket(packet);
     }
 
+    public boolean isLobbyServer() {
+        return getID().startsWith("lobby-") || getID().startsWith("hub-");
+    }
+
     @Override
     public String toString() {
         return String.format("%s-%s-%s (%s)", region, getID(), branch, serverID);

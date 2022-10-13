@@ -1,4 +1,4 @@
-package commons.us.blademc.netsys;
+package commons.us.blademc.netsys.handler;
 
 import commons.us.blademc.netsys.protocol.packet.DataPacket;
 
