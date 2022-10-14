@@ -9,10 +9,10 @@ public class ReconnectHandler implements IReconnectHandler {
 
     @Override
     public ServerInfo getFallbackServer(ProxiedPlayer player, ServerInfo serverInfo, String reason) {
-        String proxyId = NetSysServer.getInstance().getServiceInfo().getID();
+        String proxyID = NetSysServer.getInstance().getServiceInfo().getID();
 
         player.sendMessage(
-                "§8Unexpected? Report this §7(" + serverInfo.getServerName() + "-" + proxyId + "): §c" + reason +
+                "§8Unexpected? Report this §7(" + proxyID + "-" + serverInfo.getServerName() + "): §c" + reason +
                 "\n" +
                 "§aWe will connect you to a lobby shortly..."
         );

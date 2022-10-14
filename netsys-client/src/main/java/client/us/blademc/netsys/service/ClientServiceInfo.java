@@ -58,6 +58,6 @@ public class ClientServiceInfo {
 
     @Override
     public String toString() {
-        return String.format("%s-%s-%s (%s)", region, getID(), branch, serverID);
+        return String.format("%s region: %s, branch: %s, proxy: %s", getID(), region, branch, serverID);
     }
 }
