@@ -16,6 +16,10 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/*
+Part of this code was taken and adapted from: https://github.com/aabstractt/AbstractPractice
+ */
+
 @Getter
 @Setter
 public class RedisPool {
