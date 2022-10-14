@@ -8,16 +8,13 @@ import server.us.blademc.netsys.NetSysServer;
 public class ReconnectHandler implements IReconnectHandler {
 
     @Override
-    public ServerInfo getFallbackServer(ProxiedPlayer proxiedPlayer, ServerInfo serverInfo, String reason) {
+    public ServerInfo getFallbackServer(ProxiedPlayer player, ServerInfo serverInfo, String reason) {
         String proxyId = NetSysServer.getInstance().getServiceInfo().getID();
 
-        proxiedPlayer.sendMessage("§cServer down report" +
-                "\n"+
-                "§fThe server you were previously on went down caused by §4" + reason.toUpperCase() +
+        player.sendMessage(
+                "§8Unexpected? Report this §7(" + serverInfo.getServerName() + "-" + proxyId + "): §c" + reason +
                 "\n" +
-                "§fUnexpected? Report this (" + serverInfo.getServerName() + "-" + proxyId + ")" +
-                "\n" +
-                "§aWe'll connect you to a lobby shortly..."
+                "§aWe will connect you to a lobby shortly..."
         );
 
         return NetSysServer.getInstance().getGroupHandler().getBalancedLobbyServer();
